@@ -1,0 +1,4 @@
+Downloading genomes from NCBI
+module load conda 
+conda activate ncbi_datasets
+datasets download genome accession GCA_003182015.1 --include gff3,rna,cds,protein,genome,seq-report
