@@ -1,4 +1,19 @@
-Downloading genomes from NCBI
+##Downloading genomes from NCBI##
 module load conda 
 conda activate ncbi_datasets
-datasets download genome accession GCA_003182015.1 --include gff3,rna,cds,protein,genome,seq-report
+datasets download genome accession GCA_003070745.1 --include gff3,rna,cds,protein,genome,seq-report
+
+##Renaming Files##
+mv old_filename new_filename
+
+#GLAPD workflow
+If you want design specific LAMP primers without taking care of commonality:
+  cd GLAPD/
+  ./Single -in TuberGenomes/Taes_GCA_900010015.1_PRJEB11238_BCW_v1_genomic.fna -out TaesSPR
+    (Two files "Inner/Test" and "Outer/Test" are created.)
+
+  perl par.pl --in Test --ref example/example.fa --bowtie Bowtie_path/bowtie --index example/index --specific example/background-list.txt       
+    (Two files "Inner/Test-specific.txt" and "Outer/Test-specific.txt" are created.)  
+
+  ./LAMP -in Test -ref example/example.fa -out success.txt -specific        
+    (Ten LAMP primer sets are designed successfully stored in "success.txt" file.)
