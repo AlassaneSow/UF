@@ -1,0 +1,33 @@
+##Make the furDb, -t is the folder with input sequences -n is the folder with outgroup sequences, and -d is the output database
+makeFurDb -t Taes -n TaesOUT -d Taes.db
+#run fur on the database
+fur -d Taes.db > Taes_unique.fasta
+
+##load bioawak and seqkit
+##bioawk needs this extra package 
+module load gcc/5.2.0
+module load bioawk/1.0
+
+###Delete sequences with Ns
+bioawk -c fastx '{ if($seq !~ /[Nn]/) {print ">"$name; print $seq}}' TborMarker  > Tbor_markers_no_N.fasta 
+
+###remove soft masked sequences
+bioawk -c fastx '!match($seq, /[a-z]/) { print ">"$name"\n"$seq }' input.fasta > output.fasta
+
+## remove sequences with low GC ratio
+seqkit fx2tab --name --only-id --gc input.fasta| awk -F "\t" '{if ($2 > 40) print $1}' | xargs -n 1 sh -c 'seqkit grep --pattern "$0" input.fasta' > output.fasta
+
+###remove sequences shorter than 300 bp 
+seqkit seq -m 300 input.fasta > output.fasta
+
+###remove sequences greater than 2000bp 
+seqkit seq -M 2000 input.fasta > output.fasta
+
+###count sequences
+seqkit fx2tab your_file.fasta | wc -l
+
+##Extract sequence names
+seqkit seq -n input.fasta
+
+
+
