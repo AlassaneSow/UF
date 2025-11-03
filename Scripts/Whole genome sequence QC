@@ -1,0 +1,5 @@
+##set the path for the reads
+READS="/blue/matthewsmith/a.sow/Lyonii_Genome/Analysis_Results/*.fastq"
+#run nanoplot to check quality of long reads
+ml nanoplot
+NanoPlot --fastq $READS -o nanoplot_xoo -t 8
